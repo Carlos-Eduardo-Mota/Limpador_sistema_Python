@@ -1,33 +1,34 @@
+import ctypes
 import os
 import shutil
-import ctypes
 import sys
+
 
 # 1. Função que força o script a abrir como Administrador
 def solicitar_admin():
     try:
-        # Checa se o script JÁ é Administrador
         is_admin = ctypes.windll.shell32.IsUserAnAdmin()
     except Exception:
         is_admin = False
 
     if not is_admin:
         print("🔑 Solicitando permissão de Administrador ao Windows...")
-        # Reabre o próprio script pedindo privilégios elevados (janela com o escudo)
+        script = f'"{sys.argv[0]}"'
+        args = " ".join([script] + [f'"{a}"' for a in sys.argv[1:]])
+
         ctypes.windll.shell32.ShellExecuteW(
-            None, "runas", sys.executable, " ".join(sys.argv), None, 1
+            None, "runas", sys.executable, args, None, 1
         )
-        # Fecha a versão normal sem permissão
         sys.exit()
 
-# O programa COMEÇA aqui pedindo a permissão
+
 solicitar_admin()
 
 # 2. Definição das pastas do sistema
 pastas_para_limpar = [
     os.environ.get("TEMP"),
-    os.path.join(os.environ.get("SystemRoot"), "Temp"),
-    os.path.join(os.environ.get("SystemRoot"), "Prefetch")
+    os.path.join(os.environ.get("SystemRoot", "C:\\Windows"), "Temp"),
+    os.path.join(os.environ.get("SystemRoot", "C:\\Windows"), "Prefetch"),
 ]
 
 print("Iniciando limpeza do sistema como Administrador...\n")
@@ -40,7 +41,6 @@ for pasta in pastas_para_limpar:
     arquivos_removidos = 0
     erros = 0
 
-    # Agora o os.listdir vai conseguir ler a Prefetch sem travar!
     try:
         itens = os.listdir(pasta)
     except Exception as e:
@@ -49,17 +49,18 @@ for pasta in pastas_para_limpar:
 
     for item in itens:
         caminho_completo = os.path.join(pasta, item)
-        
+
         try:
-            if os.path.isfile(caminho_completo) or os.path.islink(caminho_completo):
+            if os.path.isfile(caminho_completo) or os.path.islink(
+                caminho_completo
+            ):
                 os.remove(caminho_completo)
                 arquivos_removidos += 1
             elif os.path.isdir(caminho_completo):
-                shutil.rmtree(caminho_completo)
+                shutil.rmtree(caminho_completo, ignore_errors=True)
                 arquivos_removidos += 1
 
         except Exception:
-            # Arquivos do Windows que estão abertos/em uso no momento não podem ser apagados
             erros += 1
 
     print(f"Removidos: {arquivos_removidos} | Em uso (ignorados): {erros}\n")
