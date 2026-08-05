@@ -40,7 +40,7 @@ O projeto utiliza exclusivamente bibliotecas nativas do Python, sem necessidade 
 
 ---
 
-**## 📋 Como Baixar e Executar
+## 📋 Como Baixar e Executar
 
 Você pode rodar este projeto de duas formas: baixando o executável pronto ou rodando direto pelo código fonte em Python.
 
