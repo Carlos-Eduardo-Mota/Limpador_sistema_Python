@@ -68,10 +68,7 @@ for pasta in pastas_para_limpar:
 espaco_depois = shutil.disk_usage("C:").free / (1024**3)
 total_liberado = espaco_depois - espaco_antes
 
-if total_liberado < 0.01:
-    mb_liberados = total_liberado * 1024
-    print(f"Limpeza concluída! Você liberou {mb_liberados:.2f} MB!")
-else:
-    print(f"Limpeza concluída! Você liberou {total_liberado:.2f} GB!")
+mb_liberados = total_liberado * 1024
+print(f"Limpeza concluída! Você liberou {mb_liberados:.2f} MB!")
 
 input("Pressione ENTER para finalizar a janela...")
