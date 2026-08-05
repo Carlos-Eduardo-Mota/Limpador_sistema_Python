@@ -40,13 +40,43 @@ O projeto utiliza exclusivamente bibliotecas nativas do Python, sem necessidade 
 
 ---
 
-## 📋 Como Executar
+**## 📋 Como Baixar e Executar
 
-### Pré-requisitos
-- Python 3.x instalado no Windows.
+Você pode rodar este projeto de duas formas: baixando o executável pronto ou rodando direto pelo código fonte em Python.
 
-### Passos
-1. Clone este repositório ou baixe o arquivo `.py`.
-2. Abra o terminal ou dê um duplo clique no arquivo `.py`.
-3. Quando o Windows exibir a solicitação de controle de conta de usuário (UAC), clique em **Sim**.
-4. Aguarde a execução e pressione **Enter** ao final para fechar a janela.
+---
+
+### Opção 1: Baixando o Executável (.exe) — Recomendado
+
+1. Acesse a aba **Releases** aqui no repositório do GitHub.
+2. Baixe o arquivo `Limpador.exe`.
+
+---
+
+### 🛡️ Avisos de Segurança (O que fazer se for bloqueado?)
+
+Como este é um projeto independente e não possui um certificado digital pago, tanto o **navegador** quanto o **Windows** podem emitir alertas de segurança. 
+
+> **🔒 O arquivo é seguro?** > Sim! O código fonte é totalmente **aberto (Open Source)** e transparente aqui no GitHub. Qualquer pessoa pode inspecionar o código Python utilizado para gerar o `.exe`.
+
+#### 1. Se o NAVEGADOR bloquear o download:
+Alguns navegadores (como Chrome ou Edge) podem exibir a mensagem *"Este arquivo pode ser perigoso"* ou *"Download bloqueado"*.
+- **No Google Chrome**: Clique nos três pontos ao lado do download cancelado (ou pressione `Ctrl + J`), encontre o arquivo e clique em **Manter mesmo assim**.
+- **No Microsoft Edge**: Passe o mouse sobre o aviso do download, clique nos três pontinhos (`...`), selecione **Manter** e depois **Manter mesmo assim**.
+
+#### 2. Se o WINDOWS (SmartScreen) bloquear ao abrir:
+Ao dar duplo clique no `.exe`, o Windows pode exibir a tela azul do SmartScreen (*"O Windows protegeu o seu computador"*).
+- Clique no texto **"Mais informações"**.
+- Em seguida, clique no botão **"Executar mesmo assim"**.
+- Confirme a permissão de Administrador clicando em **Sim**.
+
+---
+
+### Opção 2: Executando via Código Fonte (Python)
+
+Se preferir rodar o script diretamente:
+1. Certifique-se de ter o **Python 3.x** instalado.
+2. Baixe o arquivo `.py` deste repositório.
+3. Abra o terminal na pasta e execute:
+   ```bash
+   python nome_do_seu_script.py**
