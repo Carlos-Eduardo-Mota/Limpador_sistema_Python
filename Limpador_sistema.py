@@ -38,7 +38,6 @@ for pasta in pastas_para_limpar:
 
     print(f"Limpando: {pasta}")
     arquivos_removidos = 0
-    total_arquivos_removidos = 0
     erros = 0
 
     try:
@@ -54,11 +53,9 @@ for pasta in pastas_para_limpar:
             if os.path.isfile(caminho_completo) or os.path.islink(caminho_completo):
                 os.remove(caminho_completo)
                 arquivos_removidos += 1
-                total_arquivos_removidos += 1
             elif os.path.isdir(caminho_completo):
                 shutil.rmtree(caminho_completo, ignore_errors=True)
                 arquivos_removidos += 1
-                total_arquivos_removidos += 1
 
         except Exception:
             erros += 1
