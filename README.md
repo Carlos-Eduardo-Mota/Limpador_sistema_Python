@@ -1,39 +1,52 @@
-# 🧹 Limpador de Sistema Windows
+# 🧹 Limpador de Arquivos Temporários do Windows (Python)
 
-Um script simples e eficiente em Python para automatizar a limpeza de arquivos temporários e resíduos do sistema operacional Windows, ajudando a liberar espaço em disco de forma rápida.
-
----
-
-## 📌 O que o script faz?
-
-O script realiza a limpeza automatizada em três diretórios críticos do Windows onde costumam ser acumulados arquivos temporários:
-
-* **Pasta Temp do Usuário (`%TEMP%`):** Arquivos temporários criados por aplicativos em execução no seu perfil de usuário.
-* **Pasta Temp do Sistema (`C:\Windows\Temp`):** Arquivos temporários gerados pelo próprio sistema operacional e serviços do Windows.
-* **Pasta Prefetch (`C:\Windows\Prefetch`):** Dados de cache do Windows utilizados para otimizar a inicialização de programas.
+Este é um script em Python desenvolvido para automatizar a limpeza de arquivos temporários e caches do Windows (`%TEMP%`, `C:\Windows\Temp` e `C:\Windows\Prefetch`), liberando espaço em disco e otimizando o sistema.
 
 ---
 
-## ⚡ Principais Recursos
+## 🚀 Funcionalidades
 
-* **Elevação Automática de Privilégios (UAC):** Ao ser executado, o script verifica se já está rodando como **Administrador**. Se não estiver, ele solicita automaticamente a permissão do Windows para rodar com privilégios elevados (necessário para limpar diretórios como a *Prefetch* e a *Temp* do sistema).
-* **Tratamento de Erros/Arquivos em Uso:** Se um arquivo estiver sendo utilizado no momento por outro programa ou pelo sistema, o script ignora o arquivo sem travar e contabiliza o erro no resumo final.
-* **Resumo da Limpeza:** Exibe no terminal a quantidade de arquivos/pastas removidos com sucesso e a quantidade de itens mantidos por estarem em uso.
-
----
-
-## 🛠️ Tecnologias Utilizadas
-
-* **Python 3.x**
-* **Bibliotecas nativas:** `os`, `shutil`, `ctypes`, `sys` (não requer nenhuma instalação externa via `pip`).
+- **Elevação Automática de Privilégios**: Solicita permissão de Administrador ao Windows para conseguir acessar e limpar a pasta protegida `Prefetch`.
+- **Limpeza Abrangente**: Remove arquivos soltos e pastas inteiras contidos nos diretórios temporários.
+- **Tratamento de Exceções**: Ignora arquivos que estão sendo usados pelo sistema no momento da execução sem interromper o script.
+- **Cálculo de Espaço Liberado**: Mede o espaço livre no disco antes e depois da execução para exibir exatamente quantos **MB** ou **GB** foram recuperados.
 
 ---
 
-## 🚀 Como Executar
+## 🛠️ Tecnologias e Módulos Utilizados
 
-1. Certifique-se de ter o **Python** instalado na sua máquina.
-2. Baixe ou clone este repositório.
-3. Execute o arquivo diretamente no seu terminal ou dando duplo clique nele:
+O projeto utiliza exclusivamente bibliotecas nativas do Python, sem necessidade de instalar pacotes externos:
 
-```bash
-python Limpador_sistema.py
+- `os`: Manipulação de caminhos (`os.path.join`), verificação de arquivos/pastas (`os.path.isfile`, `os.path.isdir`) e exclusão de arquivos (`os.remove`).
+- `shutil`: Remoção de diretórios completos (`shutil.rmtree`) e medição de uso do disco (`shutil.disk_usage`).
+- `ctypes`: Comunicação com a API do Windows para verificar e solicitar privilégios de Administrador (`IsUserAnAdmin`, `ShellExecuteW`).
+- `sys`: Manipulação dos argumentos do script e controle de execução (`sys.exit`).
+
+---
+
+## ⚙️ Como Funciona o Código
+
+1. **Checagem de Admin (`solicitar_admin`)**: 
+   Verifica se o programa possui privilégios elevados. Caso não possua, o script reabre a si mesmo solicitando permissão ao Windows.
+
+2. **Cálculo de Disco Inicial**:
+   Converte a leitura em bytes de `shutil.disk_usage("C:").free` para Gigabytes (GB) dividindo por $1024^3$.
+
+3. **Loop de Limpeza**:
+   Percorre a lista de caminhos, diferencia arquivos de diretórios e aplica o método de remoção adequado (`os.remove` para arquivos e `shutil.rmtree` para pastas).
+
+4. **Resultado Final**:
+   Calcula a diferença de espaço livre e exibe o total liberado na tela em MB ou GB.
+
+---
+
+## 📋 Como Executar
+
+### Pré-requisitos
+- Python 3.x instalado no Windows.
+
+### Passos
+1. Clone este repositório ou baixe o arquivo `.py`.
+2. Abra o terminal ou dê um duplo clique no arquivo `.py`.
+3. Quando o Windows exibir a solicitação de controle de conta de usuário (UAC), clique em **Sim**.
+4. Aguarde a execução e pressione **Enter** ao final para fechar a janela.
