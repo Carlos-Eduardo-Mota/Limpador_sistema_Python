@@ -36,7 +36,7 @@ O projeto utiliza exclusivamente bibliotecas nativas do Python, sem necessidade 
    Percorre a lista de caminhos, diferencia arquivos de diretórios e aplica o método de remoção adequado (`os.remove` para arquivos e `shutil.rmtree` para pastas).
 
 4. **Resultado Final**:
-   Calcula a diferença de espaço livre e exibe o total liberado na tela em MB ou GB.
+   Calcula a diferença de espaço livre e exibe o total liberado na tela em MB.
 
 ---
 
