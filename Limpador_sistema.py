@@ -12,17 +12,16 @@ def solicitar_admin():
         is_admin = False
 
     if not is_admin:
-        print("🔑 Solicitando permissão de Administrador ao Windows...")
-        script = f'"{sys.argv[0]}"'
-        args = " ".join([script] + [f'"{a}"' for a in sys.argv[1:]])
-
+        print("🔑 Solicitando permissão de Administrador...")
         ctypes.windll.shell32.ShellExecuteW(
-            None, "runas", sys.executable, args, None, 1
+            None, "runas", sys.executable, f'"{sys.argv[0]}"', None, 1
         )
         sys.exit()
 
 
 solicitar_admin()
+
+espaco_antes = shutil.disk_usage("C:").free / (1024**3)
 
 # 2. Definição das pastas do sistema
 pastas_para_limpar = [
@@ -39,6 +38,7 @@ for pasta in pastas_para_limpar:
 
     print(f"Limpando: {pasta}")
     arquivos_removidos = 0
+    total_arquivos_removidos = 0
     erros = 0
 
     try:
@@ -51,19 +51,27 @@ for pasta in pastas_para_limpar:
         caminho_completo = os.path.join(pasta, item)
 
         try:
-            if os.path.isfile(caminho_completo) or os.path.islink(
-                caminho_completo
-            ):
+            if os.path.isfile(caminho_completo) or os.path.islink(caminho_completo):
                 os.remove(caminho_completo)
                 arquivos_removidos += 1
+                total_arquivos_removidos += 1
             elif os.path.isdir(caminho_completo):
                 shutil.rmtree(caminho_completo, ignore_errors=True)
                 arquivos_removidos += 1
+                total_arquivos_removidos += 1
 
         except Exception:
             erros += 1
 
     print(f"Removidos: {arquivos_removidos} | Em uso (ignorados): {erros}\n")
 
-print("✨ Limpeza concluída com sucesso!")
-input("\nPressione ENTER para fechar...")
+espaco_depois = shutil.disk_usage("C:").free / (1024**3)
+total_liberado = espaco_depois - espaco_antes
+
+if total_liberado < 0.01:
+    mb_liberados = total_liberado * 1024
+    print(f"Limpeza concluída! Você liberou {mb_liberados:.2f} MB!")
+else:
+    print(f"Limpeza concluída! Você liberou {total_liberado:.2f} GB!")
+
+input("Pressione ENTER para finalizar a janela...")
